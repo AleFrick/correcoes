@@ -1,20 +1,19 @@
 
 import { Router } from 'express'
-import todosRouter from './todos.routes.js'
+import usuariosRouter from './usuarios.routes.js'
+import testesRouter from './testes.routes.js'
 
-const router = Router()
+const routerPublic = Router()
+routerPublic.use('/usuarios', usuariosRouter.public)
+routerPublic.use('/testes', testesRouter.public)
 
-// Agrupa as rotas da API v1
-// Exemplo final: GET /v1/todos
-router.use('/todos', todosRouter)
+const routerPrivate = Router()
+routerPrivate.use('/usuarios', usuariosRouter.private)
+routerPrivate.use('/testes', testesRouter.private)
 
-// (Opcional) Rota de teste simples
-router.get('/ping', (req, res) => {
-  res.json({
-    message: 'API v1 está ativa!',
-    timestamp: new Date().toISOString(),
-  })
-})
+const router = {
+    public: routerPublic,
+    private: routerPrivate
+}
 
-
-export default router
+export default router 
